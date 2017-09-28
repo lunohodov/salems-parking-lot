@@ -1,5 +1,8 @@
 # salems-parking-lot
 
+[![Build
+Status](https://travis-ci.org/lunohodov/salems-parking-lot.svg?branch=master)](https://travis-ci.org/lunohodov/salems-parking-lot)
+
 If Stephen King was a programmer, how would he solve the parking lot [problem in Salem](https://en.wikipedia.org/wiki/%27Salem%27s_Lot)?
 
 Well, with lots of [coding horror](https://blog.codinghorror.com/) minced and spiced the

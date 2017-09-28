@@ -12,5 +12,5 @@ test:
 
 production:
   adapter: postgresql
-  database: salems-parking-lot-production
+  url: <%= ENV['DATABASE_URL'] %>
 

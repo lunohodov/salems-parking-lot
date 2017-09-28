@@ -10,7 +10,7 @@ Rails way and [served](https://salems-parking-lot.herokuapp.com) by a terrifying
 
 ## Requirements
 
-* Ruby v2.2.2 or newer
+* Ruby v2.4.2 or newer
 * Rails v5.1.4 or newer
 
 ## Usage

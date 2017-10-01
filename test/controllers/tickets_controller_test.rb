@@ -17,7 +17,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_json_response do |json|
-      assert_equal number_to_currency(t.fee), json["fee"]
+      assert_equal number_to_currency(t.amount_due), json["amount_due"]
     end
   end
 

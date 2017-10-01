@@ -7,7 +7,7 @@ class Ticket < ApplicationRecord
 
   before_validation :ensure_has_barcode
 
-  def fee
+  def amount_due
     hours_due * PRICE_PER_HOUR
   end
 

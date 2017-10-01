@@ -21,8 +21,8 @@ class TicketsController < ActionController::API
   def render_ticket(ticket)
     render json: {
       barcode: ticket.barcode,
-      issued_at: ticket.issued_at,
-      fee: number_to_currency(ticket.fee)
+      amount_due: number_to_currency(ticket.amount_due),
+      created_at: ticket.created_at
     }
   end
 

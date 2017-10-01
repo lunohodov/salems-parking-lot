@@ -23,6 +23,12 @@ class TicketTest < ActiveSupport::TestCase
     assert_not t.issued_at.blank?
   end
 
+  test "should calculate minimum fee for issued tickets" do
+    t = Ticket.new(created_at: Time.now)
+
+    assert_equal 2, t.fee
+  end
+
   test "should calculate fee for every hour started" do
     assert_equal 2, Ticket.new(created_at: 1.minutes.ago).fee
     assert_equal 2, Ticket.new(created_at: 60.minutes.ago).fee

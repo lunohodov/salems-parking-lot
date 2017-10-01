@@ -8,17 +8,17 @@ class Ticket < ApplicationRecord
   before_validation :ensure_has_barcode
 
   def fee
-    duration_hours * PRICE_PER_HOUR
+    hours_due * PRICE_PER_HOUR
   end
 
   private
 
-  def duration_hours(end_time = Time.now)
-    unless issued_at.nil?
-      (end_time.to_i - issued_at.to_i) / 3600.0
-    else
-      0
-    end.ceil
+  def hours_due(end_time = Time.now)
+    return 0 if issued_at.nil?
+
+    duration_hours = (end_time.to_i - issued_at.to_i) / 3600.0
+
+    [duration_hours.ceil, 1].max
   end
 
   def ensure_has_barcode

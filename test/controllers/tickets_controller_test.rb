@@ -7,7 +7,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     post tickets_path
 
     assert_response :success
-    assert_equal "application/json", @response.content_type
+    assert_json_response
   end
 
   test "should provide the fee due for a specified ticket" do
@@ -16,8 +16,12 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     get ticket_path(t.barcode)
 
     assert_response :success
+    assert_json_response number_to_currency(t.fee)
+  end
+
+  def assert_json_response(expected = nil)
     assert_equal "application/json", @response.content_type
-    assert_equal number_to_currency(t.fee), @response.body
+    assert_equal expected, @response.body unless expected.nil?
   end
 end
 

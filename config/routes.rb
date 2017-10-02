@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  resources :tickets, only: [:create, :show]
+  scope '/api' do
+    resources :tickets, only: [:create, :show]
+  end
 end

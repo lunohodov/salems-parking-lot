@@ -1,7 +1,5 @@
-class TicketsController < ActionController::API
+class TicketsController < ApiController
   include ActionView::Helpers::NumberHelper
-
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def create
     ticket = Ticket.new
@@ -24,9 +22,5 @@ class TicketsController < ActionController::API
       amount_due: number_to_currency(ticket.amount_due),
       created_at: ticket.created_at
     }
-  end
-
-  def record_not_found(e)
-    render json: { status: 404, message: "The requested resource was not found" }, status: 404
   end
 end

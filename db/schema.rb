@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170929041804) do
+ActiveRecord::Schema.define(version: 20171002195113) do
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "ticket_id"
+    t.integer "option", null: false
+    t.integer "amount_in_euro_cents", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ticket_id"], name: "index_payments_on_ticket_id"
+  end
 
   create_table "tickets", force: :cascade do |t|
     t.string "barcode", limit: 16, null: false

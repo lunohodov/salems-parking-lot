@@ -1,12 +1,22 @@
 class Ticket < ApplicationRecord
   PRICE_PER_HOUR_EUROS = 2
 
+  has_one :payment
+
   validates :barcode, :'Barcode::' => true, uniqueness: true
 
   before_validation :ensure_has_barcode
 
   def euros_due
-    hours_due * PRICE_PER_HOUR_EUROS
+    unless paid?
+      hours_due * PRICE_PER_HOUR_EUROS
+    else
+      0
+    end
+  end
+
+  def paid?
+    payment.present? && payment.valid?
   end
 
   private

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class TicketTest < ActiveSupport::TestCase
   test "should ticket does not validate when barcode is invalid" do
@@ -32,5 +33,27 @@ class TicketTest < ActiveSupport::TestCase
     t = Ticket.new
 
     assert_equal 0, t.euros_due
+  end
+
+  test "should indicate paid when ticket has corresponding payment" do
+    t = Ticket.create!
+
+    t.create_payment!(option: :cash, amount_in_euro_cents: 1)
+
+    assert t.paid?
+  end
+
+  test "should NOT indicate paid when ticket has no corresponding payment" do
+    t = Ticket.create!
+
+    assert_not t.paid?
+  end
+
+  test "should have zero fee when paid" do
+    t = Ticket.create!
+
+    t.stub :paid?, true do
+      assert_equal 0, t.euros_due
+    end
   end
 end

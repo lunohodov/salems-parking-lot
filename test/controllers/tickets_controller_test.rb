@@ -17,7 +17,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_json_response(
-      amount_due: number_to_currency(t.amount_due)
+      amount_due: number_to_currency(t.euros_due)
     )
   end
 

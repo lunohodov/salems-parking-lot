@@ -19,18 +19,18 @@ class TicketTest < ActiveSupport::TestCase
   test "should calculate minimum fee for issued tickets" do
     t = Ticket.new(created_at: Time.now)
 
-    assert_equal 2, t.amount_due
+    assert_equal 2, t.euros_due
   end
 
   test "should calculate fee for every hour started" do
-    assert_equal 2, Ticket.new(created_at: 1.minutes.ago).amount_due
-    assert_equal 2, Ticket.new(created_at: 60.minutes.ago).amount_due
-    assert_equal 4, Ticket.new(created_at: 61.minutes.ago).amount_due
+    assert_equal 2, Ticket.new(created_at: 1.minutes.ago).euros_due
+    assert_equal 2, Ticket.new(created_at: 60.minutes.ago).euros_due
+    assert_equal 4, Ticket.new(created_at: 61.minutes.ago).euros_due
   end
 
   test "should calculate no fee, when ticket is not issued yet" do
     t = Ticket.new
 
-    assert_equal 0, t.amount_due
+    assert_equal 0, t.euros_due
   end
 end

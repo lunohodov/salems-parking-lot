@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class TicketTest < ActiveSupport::TestCase
   test "should ticket does not validate when barcode is invalid" do
@@ -19,18 +20,40 @@ class TicketTest < ActiveSupport::TestCase
   test "should calculate minimum fee for issued tickets" do
     t = Ticket.new(created_at: Time.now)
 
-    assert_equal 2, t.amount_due
+    assert_equal 2, t.euros_due
   end
 
   test "should calculate fee for every hour started" do
-    assert_equal 2, Ticket.new(created_at: 1.minutes.ago).amount_due
-    assert_equal 2, Ticket.new(created_at: 60.minutes.ago).amount_due
-    assert_equal 4, Ticket.new(created_at: 61.minutes.ago).amount_due
+    assert_equal 2, Ticket.new(created_at: 1.minutes.ago).euros_due
+    assert_equal 2, Ticket.new(created_at: 60.minutes.ago).euros_due
+    assert_equal 4, Ticket.new(created_at: 61.minutes.ago).euros_due
   end
 
   test "should calculate no fee, when ticket is not issued yet" do
     t = Ticket.new
 
-    assert_equal 0, t.amount_due
+    assert_equal 0, t.euros_due
+  end
+
+  test "should indicate paid when ticket has corresponding payment" do
+    t = Ticket.create!
+
+    t.create_payment!(option: :cash, amount_in_euro_cents: 1)
+
+    assert t.paid?
+  end
+
+  test "should NOT indicate paid when ticket has no corresponding payment" do
+    t = Ticket.create!
+
+    assert_not t.paid?
+  end
+
+  test "should have zero fee when paid" do
+    t = Ticket.create!
+
+    t.stub :paid?, true do
+      assert_equal 0, t.euros_due
+    end
   end
 end

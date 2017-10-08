@@ -1,21 +1,13 @@
 class ApiController < ActionController::API
-  rescue_from StandardError, with: :handle_error
+  rescue_from ActiveRecord::RecordNotFound, with: :resource_not_found
+
+  def render_status(code, message)
+    render json: { status: code, message: message }, status: code
+  end
 
   private
 
-  def handle_error(e)
-    # FIXME
-    logger.error e
-
-    case e
-      when ActiveRecord::RecordNotFound
-        render_error 404, "The requested resource was not found"
-      else
-        render_error 500, "An unexpected error occurred"
-    end
-  end
-
-  def render_error(status, message)
-    render json: { status: status, message: message }, status: status
+  def resource_not_found
+    render_status 404, "The requested resource was not found"
   end
 end

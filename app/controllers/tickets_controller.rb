@@ -9,7 +9,7 @@ class TicketsController < ApiController
   end
 
   def show
-    ticket = Ticket.where(barcode: params[:id]).take!
+    ticket = Ticket.where(barcode: params.require(:barcode)).take!
 
     render_ticket(ticket)
   end
@@ -19,7 +19,7 @@ class TicketsController < ApiController
   def render_ticket(ticket)
     render json: {
       barcode: ticket.barcode,
-      amount_due: number_to_currency(ticket.amount_due),
+      amount_due: number_to_currency(ticket.euros_due),
       created_at: ticket.created_at
     }
   end

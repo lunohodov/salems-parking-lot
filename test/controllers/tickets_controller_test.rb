@@ -30,5 +30,24 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
       message: "The requested resource was not found"
     )
   end
+
+  test "should respond with state of 'paid' when ticket is paid" do
+    t = Ticket.create!
+    t.create_payment!(option: :cash, amount_in_euro_cents: t.euros_due * 100)
+
+    get state_ticket_path(t.barcode)
+
+    assert_response :success
+    assert_json_response(state: 'paid')
+  end
+
+  test "should respond with state of 'unpaid' when ticket is not paid" do
+    t = Ticket.create!
+
+    get state_ticket_path(t.barcode)
+
+    assert_response :success
+    assert_json_response(state: 'unpaid')
+  end
 end
 

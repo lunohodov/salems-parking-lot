@@ -19,7 +19,19 @@ class Ticket < ApplicationRecord
     payment.present? && payment.valid?
   end
 
+  def state
+    if paid_within_last_15_minutes?
+      :paid
+    else
+      :unpaid
+    end
+  end
+
   private
+
+  def paid_within_last_15_minutes?
+    paid? && 15.minutes.ago < payment.created_at
+  end
 
   def hours_due(end_time = Time.now)
     return 0 if created_at.nil?

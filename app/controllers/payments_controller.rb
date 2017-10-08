@@ -11,6 +11,6 @@ class PaymentsController < ApiController
   private
 
   def ticket
-    @ticket ||= Ticket.where(barcode: params.require(:ticket_id)).take!
+    @ticket ||= Ticket.where(barcode: params.require(:ticket_barcode)).take!
   end
 end

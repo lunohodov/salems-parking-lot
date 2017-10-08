@@ -9,7 +9,7 @@ class TicketsController < ApiController
   end
 
   def show
-    ticket = Ticket.where(barcode: params[:id]).take!
+    ticket = Ticket.where(barcode: params.require(:barcode)).take!
 
     render_ticket(ticket)
   end

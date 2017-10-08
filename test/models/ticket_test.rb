@@ -56,4 +56,24 @@ class TicketTest < ActiveSupport::TestCase
       assert_equal 0, t.euros_due
     end
   end
+
+  test "should have state of 'paid' when paid within last 15 minutes" do
+    t = Ticket.create!
+    t.create_payment!(option: :cash, amount_in_euro_cents: 1)
+
+    assert_equal :paid, t.state
+  end
+
+  test "should have state of 'unpaid' when paid earlier than 15 minutes ago" do
+    t = Ticket.create!
+    t.create_payment!(created_at: 16.minutes.ago, option: :cash, amount_in_euro_cents: 1)
+
+    assert_equal :unpaid, t.state
+  end
+
+  test "should have state of 'unpaid' when not paid" do
+    t = Ticket.create!
+
+    assert_equal :unpaid, t.state
+  end
 end

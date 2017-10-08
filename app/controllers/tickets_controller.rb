@@ -2,10 +2,8 @@ class TicketsController < ApiController
   include ActionView::Helpers::NumberHelper
 
   def create
-    ticket = Ticket.new
-    ticket.save
-
-    render_ticket(ticket)
+    t = Ticket.create!
+    render_ticket(t)
   end
 
   def show

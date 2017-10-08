@@ -1,9 +1,16 @@
 class PaymentsController < ApiController
   def create
-    Ticket.transaction do
-      ticket = Ticket.lock(true).where(barcode: params[:ticket_id]).take!
-
-      render json: { status: 200, message: "TODO: Ticket payed" }
+    ticket_payment = TicketPayment.new(ticket: ticket, option: params.require(:option))
+    if ticket_payment.make
+      render json: { status: 200 }
+    else
+      render_error 400, ticket_payment.errors.full_messages.join('\n')
     end
+  end
+
+  private
+
+  def ticket
+    @ticket ||= Ticket.where(barcode: params.require(:ticket_id)).take!
   end
 end

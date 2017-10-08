@@ -19,6 +19,10 @@ class Ticket < ApplicationRecord
     payment.present? && payment.valid?
   end
 
+  def unpaid?
+    !paid?
+  end
+
   private
 
   def hours_due(end_time = Time.now)

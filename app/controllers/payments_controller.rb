@@ -4,7 +4,7 @@ class PaymentsController < ApiController
     if ticket_payment.make
       render json: { status: 200 }
     else
-      render_error 400, ticket_payment.errors.full_messages.join('\n')
+      render_status 400, ticket_payment.errors.full_messages.join('\n')
     end
   end
 

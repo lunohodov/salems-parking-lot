@@ -1,5 +1,5 @@
 class Vacancy
-  include ActiveModel::Serialization
+  include ActiveModel::Serializers::JSON
 
   TOTAL_SPACES = 54
 
@@ -17,6 +17,10 @@ class Vacancy
 
   def free_spaces
     total_spaces - occupied_spaces
+  end
+
+  def free_spaces?
+    free_spaces > 0
   end
 
   def attributes

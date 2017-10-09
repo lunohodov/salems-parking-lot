@@ -2,8 +2,13 @@ class TicketsController < ApiController
   include ActionView::Helpers::NumberHelper
 
   def create
-    t = Ticket.create!
-    render_ticket(t)
+    vacancy = Vacancy.current
+    if vacancy.free_spaces?
+      t = Ticket.create!
+      render_ticket(t)
+    else
+      render_status :not_found, "No vacant parking spaces available"
+    end
   end
 
   def show

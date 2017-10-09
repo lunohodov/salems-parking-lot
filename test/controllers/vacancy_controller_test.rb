@@ -1,12 +1,15 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class VacancyControllerTest < ActionDispatch::IntegrationTest
   test "shows current vacancy" do
-    expected_vacancy = Vacancy.current
+    expected_vacancy = Vacancy.new(total: 10, occupied: 5)
 
-    get free_spaces_url
+    Vacancy.stub :current, expected_vacancy do
+      get free_spaces_url
 
-    assert_response :success
-    assert_json_response(expected_vacancy.as_json)
+      assert_response :success
+      assert_json_response(expected_vacancy.as_json)
+    end
   end
 end

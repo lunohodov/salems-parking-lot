@@ -3,6 +3,8 @@ class Ticket < ApplicationRecord
 
   has_one :payment
 
+  scope :unpaid, -> { left_joins(:payment).where(:"payments.ticket" => nil) }
+
   validates :barcode, :'Barcode::' => true, uniqueness: true
 
   before_validation :ensure_has_barcode

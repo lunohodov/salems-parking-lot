@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class TicketsControllerTest < ActionDispatch::IntegrationTest
   include ActionView::Helpers::NumberHelper
@@ -8,6 +9,14 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_json_response
+  end
+
+  test "should not create a ticket when there are no vacant spaces" do
+    Vacancy.stub :current, Vacancy.new(total: 1, occupied: 1) do
+      post tickets_path
+
+      assert_response :not_found
+    end
   end
 
   test "should provide the fee due for a specified ticket" do

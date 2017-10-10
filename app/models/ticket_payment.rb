@@ -26,6 +26,14 @@ class TicketPayment
     ticket.present? && ticket.paid?
   end
 
+  def euros_paid
+    if made?
+      ticket.payment.amount_in_euros
+    else
+      0
+    end
+  end
+
   private
 
   def payment_not_already_made

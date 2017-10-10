@@ -1,18 +1,16 @@
 class TicketsController < ApiController
-  include ActionView::Helpers::NumberHelper
-
   def create
     vacancy = Vacancy.current
     if vacancy.free_spaces?
       t = Ticket.create!
-      render_ticket(t)
+      render json: { barcode: t.barcode, issued_at: t.created_at }
     else
-      render_status :not_found, "No vacant parking spaces available"
+      vacant_place_not_found
     end
   end
 
   def show
-    render_ticket(ticket)
+    render json: { barcode: ticket.barcode, euros_due: ticket.euros_due }
   end
 
   def state
@@ -23,13 +21,5 @@ class TicketsController < ApiController
 
   def ticket
     @ticket ||= Ticket.where(barcode: params.require(:barcode)).take!
-  end
-
-  def render_ticket(ticket)
-    render json: {
-      barcode: ticket.barcode,
-      amount_due: number_to_currency(ticket.euros_due),
-      issued_at: ticket.created_at
-    }
   end
 end

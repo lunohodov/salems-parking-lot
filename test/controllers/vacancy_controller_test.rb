@@ -9,7 +9,7 @@ class VacancyControllerTest < ActionDispatch::IntegrationTest
       get free_spaces_url
 
       assert_response :success
-      assert_json_response(expected_vacancy.as_json)
+      assert_json_response(free_spaces: expected_vacancy.free_spaces)
     end
   end
 end

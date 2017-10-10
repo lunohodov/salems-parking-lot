@@ -7,16 +7,15 @@ class PaymentsControllerTest < ActionDispatch::IntegrationTest
     post ticket_payments_path(ticket.barcode), params: { option: :credit_card }
 
     assert_response :success
-    assert_json_response(status: 200)
-    assert ticket.paid?
+    assert_json_response(
+      barcode: ticket.barcode,
+      euros_paid: ticket.payment.amount_in_euros
+    )
   end
 
   test "should respond with 404 when ticket does not exist" do
     post ticket_payments_path("some_id"), params: { option: :cash }
 
-    assert_response :not_found
-    assert_json_response(
-      status: 404
-    )
+    assert_not_found
   end
 end

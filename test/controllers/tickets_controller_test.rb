@@ -2,61 +2,46 @@ require 'test_helper'
 require 'minitest/mock'
 
 class TicketsControllerTest < ActionDispatch::IntegrationTest
-  include ActionView::Helpers::NumberHelper
-
   test "should create a new ticket" do
     post tickets_path
 
     assert_response :success
-    assert_json_response
+    assert_json_response [ :barcode, :issued_at ]
   end
 
   test "should not create a ticket when there are no vacant spaces" do
     Vacancy.stub :current, Vacancy.new(total: 1, occupied: 1) do
       post tickets_path
 
-      assert_response :not_found
+      assert_not_found(code: :vacant_place_not_found)
     end
   end
 
-  test "should provide the fee due for a specified ticket" do
+  test "should provide euros due for ticket" do
     t = Ticket.create
 
     get ticket_path(t.barcode)
 
     assert_response :success
-    assert_json_response(
-      amount_due: number_to_currency(t.euros_due)
-    )
+    assert_json_response(barcode: t.barcode, euros_due: t.euros_due)
   end
 
-  test "should respond with error when ticket can not be found" do
-    get ticket_path("missing-barcode")
+  test "should respond with :resource_not_found when ticket does not exist" do
+    paths = [ticket_path("missing-barcode"), state_ticket_path("missing-code")]
 
-    assert_response :not_found
-    assert_json_response(
-      status: 404,
-      message: "The requested resource was not found"
-    )
+    paths.each { |path|
+      get path
+      assert_not_found
+    }
   end
 
-  test "should respond with state of 'paid' when ticket is paid" do
-    t = Ticket.create!
-    t.create_payment!(option: :cash, amount_in_euro_cents: t.euros_due * 100)
-
-    get state_ticket_path(t.barcode)
-
-    assert_response :success
-    assert_json_response(state: 'paid')
-  end
-
-  test "should respond with state of 'unpaid' when ticket is not paid" do
+  test "should respond with ticket state" do
     t = Ticket.create!
 
     get state_ticket_path(t.barcode)
 
     assert_response :success
-    assert_json_response(state: 'unpaid')
+    assert_json_response(barcode: t.barcode, state: t.state.to_s)
   end
 end
 

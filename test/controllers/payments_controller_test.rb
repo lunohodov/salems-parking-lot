@@ -13,6 +13,19 @@ class PaymentsControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "should respond with :invalid_request when option is invalid" do
+    ticket = Ticket.create!
+
+    post ticket_payments_path(ticket.barcode), params: { option: nil }
+    assert_response :bad_request
+
+    post ticket_payments_path(ticket.barcode), params: { }
+    assert_response :bad_request
+
+    post ticket_payments_path(ticket.barcode), params: { option: :bad_of_beans }
+    assert_response :bad_request
+  end
+
   test "should respond with 404 when ticket does not exist" do
     post ticket_payments_path("some_id"), params: { option: :cash }
 

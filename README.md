@@ -1,4 +1,4 @@
-# salems-parking-lot
+# Salem's Parking Lot
 
 [![Build
 Status](https://travis-ci.org/lunohodov/salems-parking-lot.svg?branch=master)](https://travis-ci.org/lunohodov/salems-parking-lot)
@@ -6,7 +6,7 @@ Status](https://travis-ci.org/lunohodov/salems-parking-lot.svg?branch=master)](h
 If Stephen King was a programmer, how would he solve the parking lot [problem in Salem](https://en.wikipedia.org/wiki/%27Salem%27s_Lot)?
 
 Well, with lots of [coding horror](https://blog.codinghorror.com/) minced and spiced the
-Rails way and [served](https://salems-parking-lot.herokuapp.com) by a terrifying Heroku dyno(saurian).
+Rails way and [served](https://salems-parking-lot.herokuapp.com/api/free-spaces) by a terrifying Heroku dyno(saurian).
 
 ## Requirements
 
